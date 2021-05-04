@@ -4,6 +4,8 @@
 
 In this milestone, students will create three classes: Cell, Board, and Program.
 
+![Minesweeper Milestone 1 sample](minesweeper.jpg)
+
 ## Execution
 
 Execute this assignment according to the following guidelines:
