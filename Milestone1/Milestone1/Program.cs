@@ -6,23 +6,70 @@ namespace Milestone1
 {
     class Program
     {
-        static Board field = new Board(11);
+        static Board field = new Board();
+
         static void Main()
         {
-            // Initialize mine field.
-            printBoard(field);
+            intializeGame();
         }
 
-        private static void printBoard(Board field)
+        private static void intializeGame()
         {
-            // Title block.
+            // Display title block.
             Console.WriteLine("---------------");
             Console.WriteLine("| MINESWEEPER |");
             Console.WriteLine("---------------\n");
 
-            // Column number labels at top of board.
+            // Difficulty selection prompt
+            Console.WriteLine("Choose your difficulty level:");
+            Console.WriteLine("\n(e) Easy");
+            Console.WriteLine("(m) Medium");
+            Console.WriteLine("(h) Hard");
+
+            string [] validResponse = { "e", "m", "h", "E", "M", "H" };
+            string userInput = Console.ReadLine();
+
+            // Validate user response and handle appropriately.
+            if(!validResponse.Contains(userInput))
+            {
+                Console.WriteLine("\nInvalid selection made. Try again in 2 seconds.");
+                System.Threading.Thread.Sleep(2000);
+                Console.Clear();
+                Main();
+            }
+            else
+            {
+                // Assign appropriate difficulty level
+                switch (userInput.ToLower())
+                {
+                    case "e":
+                        field.Difficulty = 25;
+                        break;
+                    case "m":
+                        field.Difficulty = 50;
+                        break;
+                    case "h":
+                        field.Difficulty = 75;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Assign live bombs to random cells.
+                field.SetUpLiveNeighbors();
+
+                // Initialize mine field.
+                printBoard(field);
+            }
+        }
+
+        private static void printBoard(Board field)
+        {
+
+
+            // Column number labels at top of board.1
             Console.Write("+");
-            for (int i = 0; i <= field.Size; i++)
+            for (int i = 0; i < field.Size; i++)
             {
                 if (i < 10)
                     Console.Write($" {i} +");
@@ -32,15 +79,20 @@ namespace Milestone1
             Console.WriteLine();
             
             // Variable length horizontal cell border.
-            string border = string.Concat(Enumerable.Repeat("+---", field.Size + 1));
-            for (int i = 0; i <= field.Size; i++)
+            string border = string.Concat(Enumerable.Repeat("+---", field.Size));
+            for (int i = 0; i < field.Size; i++)
             {
                 Console.Write(border);
                 Console.WriteLine("+");
-                for (int j = 0; j <= field.Size; j++)
+                for (int j = 0; j < field.Size; j++)
                 {
-                    // Placeholder for bomb.
-                    Console.Write($"| * ");
+
+                    Cell c = field.Grid [i, j];
+
+                    if(c.Live == true)
+                        Console.Write($"| * ");
+                    else
+                        Console.Write($"|   ");
                 }
 
                 // Row number labels at right of board.
