@@ -9,7 +9,7 @@ namespace Milestone1Library
     public class Board
     {
         public int Size { get; set; } = 11;
-        public Cell[,] Grid { get; set; }
+        public Cell [,] Grid { get; set; }
 
         public int Difficulty { get; set; }
 
@@ -32,6 +32,7 @@ namespace Milestone1Library
             }
         }
 
+        // Mark cells containing live bombs.
         public void SetUpLiveNeighbors()
         {
             // Initialize variable for # of bombs placed.
@@ -58,8 +59,96 @@ namespace Milestone1Library
                     Grid [randRow, randCol].Live = true;
                     occupiedSpots++;
                 }
-            }    
+            }
         }
 
+
+
+
+        // Display number of bombs adjacent to each cell.
+        public void CalculateLiveNumbers()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    Cell currentCell = Grid [i, j];
+                    // Check all adjacent cells for bombs if cell is not live.
+                    if (!currentCell.Live)
+                    {
+                     
+                        // Top row edge case.
+                        if(currentCell.RowNumber == 0 && currentCell.ColumnNumber < Size - 1)
+                        {
+                            if (Grid [i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        if (currentCell.RowNumber == 0 && currentCell.ColumnNumber > 0)
+                        {
+                            if (Grid [i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // Bottom row edge case.
+                        if (currentCell.RowNumber == Size - 1)
+                        {
+                            if (Grid [i - 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // First column edge case.
+                        if(currentCell.ColumnNumber == 0)
+                        {
+                            if (Grid [i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // Last column edge case.
+                        if (currentCell.ColumnNumber == Size - 1)
+                        {
+                            if (Grid [i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // All cells not on perimeter of board.    
+                        if (currentCell.RowNumber > 0 && currentCell.RowNumber < Size - 1 
+                            && currentCell.ColumnNumber > 0 && currentCell.ColumnNumber < Size - 1)
+                        {
+                            // Row above.
+                            if (Grid [i + 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+
+                            // Current row.
+                            if (Grid [i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+
+                            // Row below.
+                            if (Grid [i - 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                    }
+
+                }
+            }
+
+        }
     }
 }

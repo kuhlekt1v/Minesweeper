@@ -35,7 +35,7 @@ namespace Milestone1
                 Console.WriteLine("\nInvalid selection made. Try again in 2 seconds.");
                 System.Threading.Thread.Sleep(2000);
                 Console.Clear();
-                Main();
+                Main(); 
             }
             else
             {
@@ -58,6 +58,11 @@ namespace Milestone1
                 // Assign live bombs to random cells.
                 field.SetUpLiveNeighbors();
 
+                // Calculate number of live neighbors.
+                field.CalculateLiveNumbers();
+
+
+
                 // Initialize mine field.
                 printBoard(field);
             }
@@ -65,9 +70,7 @@ namespace Milestone1
 
         private static void printBoard(Board field)
         {
-
-
-            // Column number labels at top of board.1
+            // Column number labels at top of board.
             Console.Write("+");
             for (int i = 0; i < field.Size; i++)
             {
@@ -86,13 +89,12 @@ namespace Milestone1
                 Console.WriteLine("+");
                 for (int j = 0; j < field.Size; j++)
                 {
-
                     Cell c = field.Grid [i, j];
 
                     if(c.Live == true)
                         Console.Write($"| * ");
                     else
-                        Console.Write($"|   ");
+                        Console.Write($"| {c.LiveNeighbors} ");
                 }
 
                 // Row number labels at right of board.
@@ -102,6 +104,5 @@ namespace Milestone1
             Console.Write(border + "+");
             Console.WriteLine();
         }
-
     }
 }
