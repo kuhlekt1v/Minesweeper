@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Milestone2Library;
 
@@ -11,6 +12,42 @@ namespace Milestone2
         static void Main()
         {
             intializeGame();
+
+            // Initialize visited cells counter.
+            int visited = 0;
+
+            // Total number of bomb-free cells.
+            int countOpen = field.CountOpenCells();
+
+            while (!field.GameOver)
+            {
+                Console.WriteLine("Enter a Row Number");
+                int row = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter a Column Number");
+                int col = int.Parse(Console.ReadLine());
+
+                // Mark cell as visited.
+                field.Grid [row, col].Visited = true;
+                visited++;
+
+                // Check bomb status of selected cell.
+                if (field.Grid [row, col].Live)
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nBOOM! Game over.\n");
+                    field.GameOver = true;
+                }
+                else if (visited == countOpen)
+                {
+                    Console.WriteLine("\nCONGRATS YOU WIN!\n");
+                    field.GameOver = true;
+                }
+                else
+                {
+                    printBoard(field);
+                }
+            }
         }
 
         private static void intializeGame()
@@ -61,8 +98,6 @@ namespace Milestone2
                 // Calculate number of live neighbors.
                 field.CalculateLiveNumbers();
 
-
-
                 // Initialize mine field.
                 printBoard(field);
             }
@@ -70,6 +105,8 @@ namespace Milestone2
 
         private static void printBoard(Board field)
         {
+            Console.Clear(); 
+
             // Column number labels at top of board.
             Console.Write("+");
             for (int i = 0; i < field.Size; i++)
@@ -91,10 +128,15 @@ namespace Milestone2
                 {
                     Cell c = field.Grid [i, j];
 
-                    if(c.Live == true)
-                        Console.Write($"| * ");
+                    if (c.Visited)
+                    {
+                        if (c.LiveNeighbors > 0)
+                            Console.Write($"| {c.LiveNeighbors} ");
+                        else
+                            Console.Write($"|   ");
+                    }
                     else
-                        Console.Write($"| {c.LiveNeighbors} ");
+                        Console.Write($"| ? ");
                 }
 
                 // Row number labels at right of board.
@@ -104,5 +146,6 @@ namespace Milestone2
             Console.Write(border + "+");
             Console.WriteLine();
         }
+
     }
 }

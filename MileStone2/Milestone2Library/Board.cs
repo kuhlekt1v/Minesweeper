@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Milestone2Library
 {
     public class Board
     {
-        public int Size { get; set; } = 11;
+        public int Size { get; set; }
         public Cell [,] Grid { get; set; }
         public int Difficulty { get; set; }
+        public bool GameOver { get; set; }
 
         public Board(int size = 11, int difficulty = 25)
         {
@@ -61,8 +58,24 @@ namespace Milestone2Library
             }
         }
 
+        // Count total number of bomb-free cells in entire grid.
+        public int CountOpenCells()
+        {
+            int freeCells = 0;
 
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    if (Grid [i, j].Live == false)
+                    {
+                        freeCells++;
+                    }
+                }
+            }
 
+            return freeCells;
+        }
 
         // Display number of bombs adjacent to each cell.
         public void CalculateLiveNumbers()
