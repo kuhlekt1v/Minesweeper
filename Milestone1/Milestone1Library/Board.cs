@@ -10,7 +10,6 @@ namespace Milestone1Library
     {
         public int Size { get; set; } = 11;
         public Cell [,] Grid { get; set; }
-
         public int Difficulty { get; set; }
 
         public Board(int size = 11, int difficulty = 25)
@@ -76,74 +75,136 @@ namespace Milestone1Library
                     // Check all adjacent cells for bombs if cell is not live.
                     if (!currentCell.Live)
                     {
-                     
-                        // Top row edge case.
-                        if(currentCell.RowNumber == 0 && currentCell.ColumnNumber < Size - 1)
+                        
+                        // Cell [0, 0].
+                        if(i == 0 && j == 0)
                         {
-                            if (Grid [i + 1, j].Live)
+                            if (Grid [i, 1].Live)
                                 Grid [i, j].LiveNeighbors++;
-                            if (Grid [i + 1, j + 1].Live)
+                            if (Grid [1, 1].Live)
                                 Grid [i, j].LiveNeighbors++;
-                            if (Grid [i, j + 1].Live)
+                            if (Grid [1, j].Live)
                                 Grid [i, j].LiveNeighbors++;
                         }
 
-                        if (currentCell.RowNumber == 0 && currentCell.ColumnNumber > 0)
+                        // Cell [0, Size - 1].
+                        if(i == 0 && j == Size - 1)
                         {
-                            if (Grid [i + 1, j].Live)
+                            if( Grid [0, Size - 2].Live)
                                 Grid [i, j].LiveNeighbors++;
-                            if (Grid [i + 1, j + 1].Live)
+                            if (Grid [1, Size - 2].Live)
                                 Grid [i, j].LiveNeighbors++;
-                            if (Grid [i, j + 1].Live)
+                            if (Grid [1, Size - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+                        
+                        // Cell [Size - 1, 0].
+                        if(i == Size - 1 && j == 0)
+                        {
+                            if (Grid [Size - 2, 0].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [Size - 2, 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if(Grid [Size - 1, 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }   
+
+                        // Cell [Size - 1, Size - 1].
+                        if(i == Size - 1 && j == Size -1)
+                        {
+                            if (Grid [Size - 2, Size - 2].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [Size - 2, Size - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [Size - 1, Size - 2].Live)
                                 Grid [i, j].LiveNeighbors++;
                         }
 
-                        // Bottom row edge case.
-                        if (currentCell.RowNumber == Size - 1)
-                        {
-                            if (Grid [i - 1, j].Live)
-                                Grid [i, j].LiveNeighbors++;
-                        }
-
-                        // First column edge case.
-                        if(currentCell.ColumnNumber == 0)
-                        {
-                            if (Grid [i, j + 1].Live)
-                                Grid [i, j].LiveNeighbors++;
-                        }
-
-                        // Last column edge case.
-                        if (currentCell.ColumnNumber == Size - 1)
-                        {
-                            if (Grid [i, j - 1].Live)
-                                Grid [i, j].LiveNeighbors++;
-                        }
-
-                        // All cells not on perimeter of board.    
-                        if (currentCell.RowNumber > 0 && currentCell.RowNumber < Size - 1 
-                            && currentCell.ColumnNumber > 0 && currentCell.ColumnNumber < Size - 1)
+                        // Center cells.
+                        if(i > 0 && i < Size - 1 && j > 0 && j < Size - 1)
                         {
                             // Row above.
                             if (Grid [i + 1, j - 1].Live)
                                 Grid [i, j].LiveNeighbors++;
                             if (Grid [i + 1, j].Live)
                                 Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
 
                             // Current row.
-                            if (Grid [i, j + 1].Live)
-                                Grid [i, j].LiveNeighbors++;
                             if (Grid [i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j + 1].Live)
                                 Grid [i, j].LiveNeighbors++;
 
                             // Row below.
-                            if (Grid [i - 1, j + 1].Live)
-                                Grid [i, j].LiveNeighbors++;
-                            if (Grid [i - 1, j - 1].Live)
+                            if (Grid[i - 1, j - 1].Live)
                                 Grid [i, j].LiveNeighbors++;
                             if (Grid [i - 1, j].Live)
                                 Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
                         }
 
+                        // Top row > col 0 and < col Size - 1.
+                        if (i == 0 && j > 0 && j < Size - 1)
+                        {
+                            if(Grid[i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i + 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i + 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // Bottom row > col 0 and < col Size - 1.
+                        if(i == Size - 1 && j > 0 && j < Size - 1)
+                        {
+                            if (Grid [i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // First column > row 0 and < row Size - 1.
+                        if(j == 0 && i > 0 && i < Size - 1)
+                        {
+                            if(Grid[i - 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i - 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid[i + 1, j + 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
+
+                        // Last column > row 0 and < row Size - 1.
+                        if (j == Size - 1 && i > 0 && i < Size - 1)
+                        {
+                            if (Grid [i - 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i - 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                            if (Grid [i + 1, j - 1].Live)
+                                Grid [i, j].LiveNeighbors++;
+                        }
                     }
 
                 }

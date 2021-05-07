@@ -74,7 +74,7 @@ namespace Milestone1
             Console.Write("+");
             for (int i = 0; i < field.Size; i++)
             {
-                if (i < 10)
+                if (i < field.Size - 1)
                     Console.Write($" {i} +");
                 else
                     Console.Write($" {i}+");
