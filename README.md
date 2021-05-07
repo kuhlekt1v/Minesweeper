@@ -6,7 +6,8 @@
 
 - [x] Milestone 1: Console Application
     - **Time:** 8.65 hr. 
-- [ ] Milestone 2: Interactive Playable Version
+- [x] Milestone 2: Interactive Playable Version
+    - **Time:** 1.12 hr. 
 - [ ] Milestone 3: Using Recursion
 - [ ] Milestone 4: GUI Version
 - [ ] Milestone 5: Combining GUI and Game Logic
