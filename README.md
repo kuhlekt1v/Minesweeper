@@ -4,7 +4,8 @@
 
 ## Contents
 
-- [ ] Milestone 1: Console Application
+- [x] Milestone 1: Console Application
+    - **Time:** 8.65 hr. 
 - [ ] Milestone 2: Interactive Playable Version
 - [ ] Milestone 3: Using Recursion
 - [ ] Milestone 4: GUI Version
