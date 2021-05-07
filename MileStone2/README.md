@@ -4,7 +4,7 @@
 
 In this milestone, students will create an interactive playable version of the Minesweeper game.
 
-![Minesweeper Milestone 2 sample](Milestone2.jpg)
+![Minesweeper Milestone 2 sample](milestone2.jpg)
 
 ## Execution
 
