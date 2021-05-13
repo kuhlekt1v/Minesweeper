@@ -13,12 +13,6 @@ namespace Milestone2
         {
             intializeGame();
 
-            // Initialize visited cells counter.
-            int visited = 0;
-
-            // Total number of bomb-free cells.
-            int countOpen = field.CountOpenCells();
-
             while (!field.GameOver)
             {
                 Console.WriteLine("Enter a Row Number");
@@ -28,8 +22,13 @@ namespace Milestone2
                 int col = int.Parse(Console.ReadLine());
 
                 // Mark cell as visited.
-                field.Grid [row, col].Visited = true;
-                visited++;
+                field.FloodFill(row, col);
+
+                // Total number of bomb-free cells.
+                int openCells = field.CountOpenCells();
+
+                // Total number of visited cells.
+                int visitedCells = field.CountVisited();
 
                 // Check bomb status of selected cell.
                 if (field.Grid [row, col].Live)
@@ -38,8 +37,9 @@ namespace Milestone2
                     Console.WriteLine("\nBOOM! Game over.\n");
                     field.GameOver = true;
                 }
-                else if (visited == countOpen)
+                else if (visitedCells == openCells)
                 {
+                    printBoard(field);
                     Console.WriteLine("\nCONGRATS YOU WIN!\n");
                     field.GameOver = true;
                 }
@@ -47,6 +47,7 @@ namespace Milestone2
                 {
                     printBoard(field);
                 }
+
             }
         }
 
@@ -80,13 +81,13 @@ namespace Milestone2
                 switch (userInput.ToLower())
                 {
                     case "e":
-                        field.Difficulty = 25;
+                        field.Difficulty = 10;
                         break;
                     case "m":
-                        field.Difficulty = 50;
+                        field.Difficulty = 20;
                         break;
                     case "h":
-                        field.Difficulty = 75;
+                        field.Difficulty = 35;
                         break;
                     default:
                         break;
@@ -116,12 +117,15 @@ namespace Milestone2
                 else
                     Console.Write($" {i}+");
             }
+
             Console.WriteLine();
             
             // Variable length horizontal cell border.
             string border = string.Concat(Enumerable.Repeat("+---", field.Size));
             for (int i = 0; i < field.Size; i++)
             {
+                // Set default console color.
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(border);
                 Console.WriteLine("+");
                 for (int j = 0; j < field.Size; j++)
@@ -131,9 +135,23 @@ namespace Milestone2
                     if (c.Visited)
                     {
                         if (c.LiveNeighbors > 0)
-                            Console.Write($"| {c.LiveNeighbors} ");
+                        {
+                            // Display live neighbors in red.
+                            Console.Write("| ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write($"{c.LiveNeighbors}");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write(" ");
+                        }
                         else
-                            Console.Write($"|   ");
+                        {
+                            // Display visited cells in yellow.
+                            Console.Write("| ");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("~");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write(" ");
+                        }
                     }
                     else
                         Console.Write($"| ? ");
