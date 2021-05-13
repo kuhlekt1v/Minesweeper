@@ -8,7 +8,8 @@
     - **Time:** 8.65 hr. 
 - [x] Milestone 2: Interactive Playable Version
     - **Time:** 1.12 hr. 
-- [ ] Milestone 3: Using Recursion
+- [x] Milestone 3: Using Recursion
+    - **Time:** 2.51 hr. 
 - [ ] Milestone 4: GUI Version
 - [ ] Milestone 5: Combining GUI and Game Logic
 - [ ] Milestone 6: PlayerStats Class
