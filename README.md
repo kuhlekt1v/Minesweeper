@@ -10,7 +10,8 @@
     - **Time:** 1.12 hr. 
 - [x] Milestone 3: Using Recursion
     - **Time:** 2.51 hr. 
-- [ ] Milestone 4: GUI Version
+- [x] Milestone 4: GUI Version
+    - **Time:** 3.16 hr. 
 - [ ] Milestone 5: Combining GUI and Game Logic
 - [ ] Milestone 6: PlayerStats Class
 - [ ] Milestone 7: Final Project Presentation
