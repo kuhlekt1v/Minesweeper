@@ -4,7 +4,7 @@
 
 In this milestone, students will add the game play logic to their GUI application
 
-![Minesweeper Milestone 5 sample](milestone5-sample.jpg)
+![Minesweeper Milestone 5 sample](milestone5-sample.JPG)
 
 ## Execution
 
