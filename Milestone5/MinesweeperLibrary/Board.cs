@@ -10,8 +10,9 @@ namespace MinesweeperLibrary
         public Cell [,] Grid { get; set; }
         public int Difficulty { get; set; }
         public bool GameOver { get; set; }
+        public int Click { get; set; }
 
-        public Board(int size = 11, int difficulty = 25)
+        public Board(int size = 11, int difficulty = 10)
         {
             // Initialize board size.
             Size = size;
@@ -28,6 +29,14 @@ namespace MinesweeperLibrary
                     Grid [i, j] = new Cell(i, j);
                 }
             }
+        }
+
+
+        // Need to change to only count un-visited cells.
+        public int UpdateClickCounter()
+        {
+            Click++;
+            return Click;
         }
 
         // Mark cells containing live bombs.

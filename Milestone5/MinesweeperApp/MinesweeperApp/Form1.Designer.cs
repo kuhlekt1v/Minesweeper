@@ -68,7 +68,7 @@ namespace MinesweeperApp
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(465, 36);
+            this.label2.Location = new System.Drawing.Point(457, 36);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 25);
             this.label2.TabIndex = 1;
@@ -78,7 +78,7 @@ namespace MinesweeperApp
             // 
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblTime.Location = new System.Drawing.Point(12, 61);
+            this.lblTime.Location = new System.Drawing.Point(17, 61);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(27, 32);
             this.lblTime.TabIndex = 2;
@@ -107,9 +107,11 @@ namespace MinesweeperApp
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(12, 96);
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.panel1.AutoScroll = true;
+            this.panel1.Location = new System.Drawing.Point(17, 108);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(513, 375);
+            this.panel1.Size = new System.Drawing.Size(500, 500);
             this.panel1.TabIndex = 5;
             // 
             // menuStrip1
@@ -119,7 +121,7 @@ namespace MinesweeperApp
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(537, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(534, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -182,9 +184,8 @@ namespace MinesweeperApp
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 485);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(534, 625);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnStart);
@@ -194,8 +195,11 @@ namespace MinesweeperApp
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Minesweeper";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
