@@ -15,7 +15,6 @@ namespace MinesweeperApp
         // Initialize game timer.
         private Stopwatch watch = new Stopwatch();
 
-        private int clicks;
 
         public Form1()
         {
@@ -46,7 +45,7 @@ namespace MinesweeperApp
             {
                 for (int j = 0; j < field.Size; j++)
                 {
-
+                    // Button size.
                     btnGrid [i, j] = new Button();
                     btnGrid [i, j].Height = btnSize;
                     btnGrid [i, j].Width = btnSize;
@@ -73,14 +72,32 @@ namespace MinesweeperApp
             int x = location.X;
             int y = location.Y;
 
-            // Mark cells as visited.
-            field.FloodFill(x, y);
-
             // Update & display number of clicks by user - change for unvisited cells only in Board.cs.
             field.UpdateClickCounter();
             lblClicks.Text = field.Click.ToString();
 
+            // Mark cells as visited.
+            field.FloodFill(x, y);
+
+
+            // CHECK FOR LIVE CELL NEEDS TO GO HERE BEFORE UPDATEGRID
+
+
+
+
+
+            // Display the updated grid.
             UpdateGrid(field);
+
+            // Check for game win or lose.
+            if (field.GameStatus() == "win")
+                DisplayGameResult($"You've won in {lblTime.Text} seconds!");            
+        }
+
+        private void DisplayGameResult(string message)
+        {
+            watch.Stop();
+            MessageBox.Show(message);
         }
 
         // Update minefield after user click.
@@ -91,13 +108,50 @@ namespace MinesweeperApp
             {
                 for (int j = 0; j < field.Size; j++)
                 {
+
                     Cell c = field.Grid [i, j];
                     if (c.Visited)
                     {
-                        if (c.LiveNeighbors > 0)
-                            btnGrid [i, j].Text = c.LiveNeighbors.ToString();
-                        else
-                            btnGrid [i, j].Text = "~";
+                        btnGrid [i, j].BackColor = ColorTranslator.FromHtml("#bdbdbd");
+
+                        // Set live neighbor label color.
+                        switch (c.LiveNeighbors)
+                        {
+                            case 1:
+                                btnGrid [i, j].ForeColor = Color.Blue;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 2:
+                                btnGrid [i, j].ForeColor = Color.Green;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 3:
+                                btnGrid [i, j].ForeColor = Color.Red;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 4:
+                                btnGrid [i, j].ForeColor = Color.DarkBlue;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 5:
+                                btnGrid [i, j].ForeColor = Color.DarkRed;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 6:
+                                btnGrid [i, j].ForeColor = Color.DarkGreen;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 7:
+                                btnGrid [i, j].ForeColor = Color.Maroon;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            case 8:
+                                btnGrid [i, j].ForeColor = Color.Black;
+                                btnGrid [i, j].Text = c.LiveNeighbors.ToString();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -115,14 +169,12 @@ namespace MinesweeperApp
         // Initialize new game.
         private void btnStart_Click(object sender, EventArgs e)
         {
-            int clicks = 0;
+            // Toggle start button text.
+            btnStart.Text = "Reset";
 
-            // Reset time and clicks.
             watch.Restart();
-            lblClicks.Text = clicks.ToString();
+
+            lblClicks.Text = 0.ToString();
         }
-
-
-
     }
 }

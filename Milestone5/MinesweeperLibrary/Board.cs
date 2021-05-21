@@ -12,7 +12,7 @@ namespace MinesweeperLibrary
         public bool GameOver { get; set; }
         public int Click { get; set; }
 
-        public Board(int size = 11, int difficulty = 10)
+        public Board(int size = 11, int difficulty = 4) // Change back to 10 after test
         {
             // Initialize board size.
             Size = size;
@@ -254,6 +254,7 @@ namespace MinesweeperLibrary
 
         }
 
+        // Constrain flood fill to grid boundaries.
         private bool IsValid(int r, int c)
         {
             return (r < Size && r >= 0 && c < Size && c >= 0 && Grid [r, c].Visited == false && !Grid [r, c].Live);
@@ -283,6 +284,18 @@ namespace MinesweeperLibrary
                 else
                     Grid [row, col].Visited = true;
             }
+        }
+
+        public string GameStatus(int row = 0, int col = 0)
+        {
+            string result = "";
+            int openCells = CountOpenCells();
+            int visitedCells = CountVisited();
+
+            if (openCells == visitedCells)
+                result = "win";
+
+            return result;
         }
     }
 }
