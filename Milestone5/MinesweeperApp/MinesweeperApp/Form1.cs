@@ -51,7 +51,9 @@ namespace MinesweeperApp
                     btnGrid [i, j].Width = btnSize;
 
                     // Add click event to each button
-                    btnGrid [i, j].Click += GridButtonClick;
+                    btnGrid [i, j].MouseDown += GridButtonClick;
+                    //btnGrid [i, j].MouseDown += RightClickItem;
+
 
                     // Add new button to the panel.
                     panel1.Controls.Add(btnGrid [i, j]);
@@ -63,35 +65,45 @@ namespace MinesweeperApp
             }
         }
 
-        private void GridButtonClick(object sender, EventArgs e)
+        //private void RightClickItem(Object sender, MouseEventArgs e)
+        //{
+
+        //}
+
+        private void GridButtonClick(object sender, MouseEventArgs e)
         {
-            // Get the row and column number of the button clicked
-            Button clickedButton = (Button)sender;
-            Point location = (Point)clickedButton.Tag;
+            if (e.Button == MouseButtons.Left)
+            {
+                // Get the row and column number of the button clicked
+                Button clickedButton = (Button)sender;
+                Point location = (Point)clickedButton.Tag;
 
-            int x = location.X;
-            int y = location.Y;
+                int x = location.X;
+                int y = location.Y;
 
-            // Update & display number of clicks by user - change for unvisited cells only in Board.cs.
-            field.UpdateClickCounter();
-            lblClicks.Text = field.Click.ToString();
+                // Update & display number of clicks by user - change for unvisited cells only in Board.cs.
+                field.UpdateClickCounter();
+                lblClicks.Text = field.Click.ToString();
 
-            // Mark cells as visited.
-            field.FloodFill(x, y);
-
-
-            // CHECK FOR LIVE CELL NEEDS TO GO HERE BEFORE UPDATEGRID
-
+                // Mark cells as visited.
+                field.FloodFill(x, y);
 
 
+                // CHECK FOR LIVE CELL NEEDS TO GO HERE BEFORE UPDATEGRID
 
 
-            // Display the updated grid.
-            UpdateGrid(field);
+                // Display the updated grid.
+                UpdateGrid(field);
 
-            // Check for game win or lose.
-            if (field.GameStatus() == "win")
-                DisplayGameResult($"You've won in {lblTime.Text} seconds!");            
+                // Check for game win or lose.
+                if (field.GameStatus() == "win")
+                    DisplayGameResult($"You've won in {lblTime.Text} seconds!");
+            }
+            else if(e.Button == MouseButtons.Right)
+            {
+                MessageBox.Show("Success.");
+            }
+             
         }
 
         private void DisplayGameResult(string message)
