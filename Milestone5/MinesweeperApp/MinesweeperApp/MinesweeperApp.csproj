@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="red-flag.png" />
+    <None Remove="red-triang-flag.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="red-flag.png" />
+    <EmbeddedResource Include="red-triang-flag.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\MinesweeperLibrary\MinesweeperLibrary.csproj" />
   </ItemGroup>
 

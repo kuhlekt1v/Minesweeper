@@ -15,7 +15,6 @@ namespace MinesweeperApp
         // Initialize game timer.
         private Stopwatch watch = new Stopwatch();
 
-
         public Form1()
         {
             InitializeComponent();
@@ -54,7 +53,6 @@ namespace MinesweeperApp
                     btnGrid [i, j].MouseDown += GridButtonClick;
                     //btnGrid [i, j].MouseDown += RightClickItem;
 
-
                     // Add new button to the panel.
                     panel1.Controls.Add(btnGrid [i, j]);
 
@@ -65,21 +63,20 @@ namespace MinesweeperApp
             }
         }
 
-        //private void RightClickItem(Object sender, MouseEventArgs e)
-        //{
-
-        //}
-
         private void GridButtonClick(object sender, MouseEventArgs e)
         {
+            // Get the row and column number of the button clicked
+            Button clickedButton = (Button)sender;
+            Point location = (Point)clickedButton.Tag;
+            Image redFlag = Image.FromFile(@"C:\Ghost\Coding\Minesweeper\Milestone5\MinesweeperApp\MinesweeperApp\red-triang-flag.png");
+
+            int x = location.X;
+            int y = location.Y;
+
             if (e.Button == MouseButtons.Left)
             {
-                // Get the row and column number of the button clicked
-                Button clickedButton = (Button)sender;
-                Point location = (Point)clickedButton.Tag;
-
-                int x = location.X;
-                int y = location.Y;
+                // Remove image (in case it has been flagged).
+                btnGrid[x, y].Image = null;
 
                 // Update & display number of clicks by user - change for unvisited cells only in Board.cs.
                 field.UpdateClickCounter();
@@ -88,9 +85,7 @@ namespace MinesweeperApp
                 // Mark cells as visited.
                 field.FloodFill(x, y);
 
-
                 // CHECK FOR LIVE CELL NEEDS TO GO HERE BEFORE UPDATEGRID
-
 
                 // Display the updated grid.
                 UpdateGrid(field);
@@ -101,9 +96,10 @@ namespace MinesweeperApp
             }
             else if(e.Button == MouseButtons.Right)
             {
-                MessageBox.Show("Success.");
+                // Display red flag.
+                btnGrid[x, y].Image = redFlag;
+                btnGrid[x, y].ImageAlign = ContentAlignment.MiddleCenter;
             }
-             
         }
 
         private void DisplayGameResult(string message)
@@ -120,7 +116,6 @@ namespace MinesweeperApp
             {
                 for (int j = 0; j < field.Size; j++)
                 {
-
                     Cell c = field.Grid [i, j];
                     if (c.Visited)
                     {
