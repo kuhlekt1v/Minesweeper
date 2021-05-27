@@ -12,7 +12,7 @@ namespace MinesweeperLibrary
         public bool GameOver { get; set; }
         public int Click { get; set; }
 
-        public Board(int size = 11, int difficulty = 4) // Change back to 10 after test
+        public Board(int size = 11, int difficulty = 5)
         {
             // Initialize board size.
             Size = size;
@@ -31,11 +31,12 @@ namespace MinesweeperLibrary
             }
         }
 
-
         // Need to change to only count un-visited cells.
-        public int UpdateClickCounter()
+        public int UpdateClickCounter(int row, int col)
         {
-            Click++;
+            if(!Grid[row, col].Visited)
+                Click++;
+            
             return Click;
         }
 
@@ -48,7 +49,7 @@ namespace MinesweeperLibrary
 
             // Calculate bombs to place base on percentage of board size.
             int liveSpots = Convert.ToInt32(Size * Size * percent);
-            Random random = new Random();
+            Random random = new();
 
             /* Place bombs until all # of spots available is filled.
                Works well up to 80% filled, and then extremely slow 
@@ -105,9 +106,22 @@ namespace MinesweeperLibrary
             return visited;
         }
     
+        public void ResetCells()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    Grid [i, j].Visited = false;
+                    Grid [i, j].Live = false;
+                    Grid [i, j].LiveNeighbors = 0;
+                }
+            }
 
-    // Display number of bombs adjacent to each cell.
-    public void CalculateLiveNumbers()
+        }
+
+        // Display number of bombs adjacent to each cell.
+        public void CalculateLiveNumbers()
         {
             for (int i = 0; i < Size; i++)
             {
@@ -254,15 +268,26 @@ namespace MinesweeperLibrary
 
         }
 
+
         // Constrain flood fill to grid boundaries.
         private bool IsValid(int r, int c)
         {
-            return (r < Size && r >= 0 && c < Size && c >= 0 && Grid [r, c].Visited == false && !Grid [r, c].Live);
+            return (r < Size && r >= 0 && c < Size && c >= 0 && Grid [r, c].Visited == false);
         }
 
+        // Check if cell is live
+        public bool IsLive(int row, int col)
+        {
+            if (IsValid(row, col) && Grid [row, col].Live)
+                return true;
+            else
+                return false;
+        }
+
+        // Standard flood fill for non live cells.  
         public void FloodFill(int row, int col)
         {
-            if (IsValid(row, col))
+            if (IsValid(row, col) && !Grid [row, col].Live)
             {
                 if (Grid [row, col].LiveNeighbors == 0)
                 {
@@ -286,14 +311,40 @@ namespace MinesweeperLibrary
             }
         }
 
-        public string GameStatus(int row = 0, int col = 0)
+        // Reveal entire game board.
+        public void RevealBoard(string result)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    Cell currentCell = Grid [i, j];
+
+                    // Mark all cells visited.
+                    if (result == "lose")
+                        currentCell.Visited = true;
+
+                    // Mark all except mines visited
+                    else if(result == "win")
+                    {
+                        if (!currentCell.Live)
+                            currentCell.Visited = true;
+                    }
+                }
+            }
+        }
+
+        public string GameStatus(int row, int col)
         {
             string result = "";
             int openCells = CountOpenCells();
             int visitedCells = CountVisited();
 
-            if (openCells == visitedCells)
+
+            if (!Grid [row, col].Live && openCells == visitedCells)
                 result = "win";
+            else if (Grid [row, col].Live)
+                result = "lose";
 
             return result;
         }

@@ -30,12 +30,12 @@ namespace MinesweeperApp
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
             this.lblClicks = new System.Windows.Forms.Label();
-            this.btnStart = new System.Windows.Forms.Button();
+            this.BtnReset = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,10 +49,10 @@ namespace MinesweeperApp
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // timer1
+            // Timer1
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.Timer1.Enabled = true;
+            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // label1
             // 
@@ -95,15 +95,15 @@ namespace MinesweeperApp
             this.lblClicks.TabIndex = 3;
             this.lblClicks.Text = "0";
             // 
-            // btnStart
+            // BtnReset
             // 
-            this.btnStart.Location = new System.Drawing.Point(243, 36);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(50, 50);
-            this.btnStart.TabIndex = 4;
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.BtnReset.Location = new System.Drawing.Point(243, 36);
+            this.BtnReset.Name = "BtnReset";
+            this.BtnReset.Size = new System.Drawing.Size(50, 50);
+            this.BtnReset.TabIndex = 4;
+            this.BtnReset.Text = "Reset";
+            this.BtnReset.UseVisualStyleBackColor = true;
+            this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
             // panel1
             // 
@@ -121,12 +121,14 @@ namespace MinesweeperApp
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ShowItemToolTips = true;
             this.menuStrip1.Size = new System.Drawing.Size(534, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.CheckOnClick = true;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsDifficultySetting,
             this.toolStripSeparator2,
@@ -144,6 +146,7 @@ namespace MinesweeperApp
             this.tsDifficultySetting.Name = "tsDifficultySetting";
             this.tsDifficultySetting.Size = new System.Drawing.Size(122, 22);
             this.tsDifficultySetting.Text = "Difficulty";
+            this.tsDifficultySetting.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.fileToolStripMenuItem_ItemClicked);
             // 
             // tsDifficultyEasy
             // 
@@ -188,7 +191,7 @@ namespace MinesweeperApp
             this.ClientSize = new System.Drawing.Size(534, 625);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.lblClicks);
             this.Controls.Add(this.lblTime);
             this.Controls.Add(this.label2);
@@ -200,6 +203,7 @@ namespace MinesweeperApp
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Minesweeper";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -210,12 +214,12 @@ namespace MinesweeperApp
 
         #endregion
 
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer Timer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Label lblClicks;
-        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button BtnReset;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

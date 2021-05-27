@@ -9,29 +9,54 @@ namespace MinesweeperApp
     public partial class Form1 : Form
     {
         // Initialize empty mine field.
-        static Board field = new Board();
-        private Button [,] btnGrid = new Button [field.Size, field.Size];
+        static Board field = new();
+        private readonly Button [,] btnGrid = new Button [field.Size, field.Size];
+
+        // Embedded cell icons.
+        readonly Image redFlag = Image.FromFile("..\\..\\..\\Images\\red-triang-flag.png");
+        readonly Image mine = Image.FromFile("..\\..\\..\\Images\\mine.png");
 
         // Initialize game timer.
-        private Stopwatch watch = new Stopwatch();
+        private readonly Stopwatch watch = new();
 
         public Form1()
         {
             InitializeComponent();
-            InitializeGame();
-        }
-
-        private void InitializeGame()
-        {
+            
             // Assign live bombs to random cells.
             field.SetUpLiveNeighbors();
-
-            // Calculate number of live neighbors.
             field.CalculateLiveNumbers();
-
-            // Initialize mine field.
             CreateGrid(field);
         }
+
+        private void fileToolStripMenuItem_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            int difficulty = 5;
+
+            switch (e.ClickedItem.Text)
+            {
+                case "Easy":
+                    difficulty = 5;
+                    break;
+                case "Normal":
+                    difficulty = 10;
+                    break;
+                case "Hard":
+                    difficulty = 25;
+                    break;
+                default:
+                    break;
+            }
+
+            // Reset mine field.
+            ResetGrid(field);
+            field.ResetCells();
+
+            field.Difficulty = difficulty;
+            field.SetUpLiveNeighbors();
+            field.CalculateLiveNumbers();
+        }
+
 
         // Create and display the initial mine field.
         private void CreateGrid(Board field)
@@ -45,13 +70,15 @@ namespace MinesweeperApp
                 for (int j = 0; j < field.Size; j++)
                 {
                     // Button size.
-                    btnGrid [i, j] = new Button();
-                    btnGrid [i, j].Height = btnSize;
-                    btnGrid [i, j].Width = btnSize;
+                    btnGrid [i, j] = new Button
+                    {
+                        Height = btnSize,
+                        Width = btnSize,
+                        BackColor = SystemColors.Control
+                    };
 
                     // Add click event to each button
                     btnGrid [i, j].MouseDown += GridButtonClick;
-                    //btnGrid [i, j].MouseDown += RightClickItem;
 
                     // Add new button to the panel.
                     panel1.Controls.Add(btnGrid [i, j]);
@@ -68,37 +95,62 @@ namespace MinesweeperApp
             // Get the row and column number of the button clicked
             Button clickedButton = (Button)sender;
             Point location = (Point)clickedButton.Tag;
-            Image redFlag = Image.FromFile(@"C:\Ghost\Coding\Minesweeper\Milestone5\MinesweeperApp\MinesweeperApp\red-triang-flag.png");
 
             int x = location.X;
             int y = location.Y;
 
+            // Left click.
             if (e.Button == MouseButtons.Left)
             {
+                if (field.Click == 0)
+                {
+                    tsDifficultySetting.Enabled = false;
+                    watch.Restart();
+                }
+
                 // Remove image (in case it has been flagged).
                 btnGrid[x, y].Image = null;
 
                 // Update & display number of clicks by user - change for unvisited cells only in Board.cs.
-                field.UpdateClickCounter();
+                field.UpdateClickCounter(x, y);
                 lblClicks.Text = field.Click.ToString();
 
                 // Mark cells as visited.
                 field.FloodFill(x, y);
 
-                // CHECK FOR LIVE CELL NEEDS TO GO HERE BEFORE UPDATEGRID
-
-                // Display the updated grid.
-                UpdateGrid(field);
-
-                // Check for game win or lose.
-                if (field.GameStatus() == "win")
-                    DisplayGameResult($"You've won in {lblTime.Text} seconds!");
+                switch (field.GameStatus(x, y))
+                {
+                    case "win":
+                        DisplayGameResult($"You've won in {lblTime.Text} seconds!");
+                        field.RevealBoard("win");
+                        UpdateGrid(field, "win");
+                        break;
+                    case "lose":
+                        btnGrid [x, y].BackColor = Color.Red;
+                        btnGrid [x, y].Image = mine;
+                        DisplayGameResult("Game over!");
+                        field.RevealBoard("lose");
+                        UpdateGrid(field);
+                        break;
+                    default:
+                        UpdateGrid(field);
+                        break;
+                }
             }
-            else if(e.Button == MouseButtons.Right)
+
+            // Right click empty square.
+            else if(e.Button == MouseButtons.Right && btnGrid [x, y].Image == null && btnGrid [x, y].Text == "")
             {
                 // Display red flag.
                 btnGrid[x, y].Image = redFlag;
                 btnGrid[x, y].ImageAlign = ContentAlignment.MiddleCenter;
+            }
+
+            // Right click empty square.
+            else if (e.Button == MouseButtons.Right && btnGrid [x, y].Image == redFlag)
+            {
+                // Remove red flag.
+                btnGrid [x, y].Image = null;
             }
         }
 
@@ -109,7 +161,7 @@ namespace MinesweeperApp
         }
 
         // Update minefield after user click.
-        private void UpdateGrid(Board field)
+        private void UpdateGrid(Board field, string result = null)
         {
             // Initialize grid of buttons.
             for (int i = 0; i < field.Size; i++)
@@ -117,7 +169,9 @@ namespace MinesweeperApp
                 for (int j = 0; j < field.Size; j++)
                 {
                     Cell c = field.Grid [i, j];
-                    if (c.Visited)
+
+                    // Not live visited cells.
+                    if (c.Visited && !c.Live)
                     {
                         btnGrid [i, j].BackColor = ColorTranslator.FromHtml("#bdbdbd");
 
@@ -160,13 +214,37 @@ namespace MinesweeperApp
                                 break;
                         }
                     }
+                    // Live visited cells.
+                    else if (c.Visited && c.Live)
+                    {
+                        btnGrid [i, j].BackColor = Color.Red;
+                        btnGrid [i, j].Image = mine;
+                    }
+
+                    if(result == "win" && !c.Visited && c.Live)
+                        btnGrid [i, j].Image = redFlag;
                 }
             }
         }
 
 
+        // Update minefield after user click.
+        private void ResetGrid(Board field)
+        {
+            // Initialize grid of buttons.
+            for (int i = 0; i < field.Size; i++)
+            {
+                for (int j = 0; j < field.Size; j++)
+                {
+                    btnGrid [i, j].BackColor = SystemColors.Control;
+                    btnGrid [i, j].Text = "";
+                    btnGrid [i, j].Image = null;
+                }
+            }
+        }
+
         // Update display time label.
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             TimeSpan ts = watch.Elapsed;
             string displayTime = string.Format("{0}", ts.Seconds);
@@ -174,14 +252,28 @@ namespace MinesweeperApp
         }
 
         // Initialize new game.
-        private void btnStart_Click(object sender, EventArgs e)
+        private void BtnReset_Click(object sender, EventArgs e)
         {
-            // Toggle start button text.
-            btnStart.Text = "Reset";
-
+            // Stop timer
             watch.Restart();
+            watch.Stop();
 
-            lblClicks.Text = 0.ToString();
+            // Reset labels.
+            field.Click = 0;
+            lblClicks.Text = field.Click.ToString();
+
+            // Enable difficulty selection.
+            tsDifficultySetting.Enabled = true;
+
+            // Clear all live cells & neighbors.
+            ResetGrid(field);
+
+            // Reset all cells.
+            field.ResetCells();
+
+            // Assign live bombs to random cells.
+            field.SetUpLiveNeighbors();
+            field.CalculateLiveNumbers();
         }
     }
 }
