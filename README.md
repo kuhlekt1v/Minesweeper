@@ -7,17 +7,17 @@ This repository contains my solution to the Minesweeper game as outlined by Shad
 
 - [x] Milestone 1: Console Application
     - **Time:** 8.65 hr. 
-    - **Requirements:** [Milestone 1 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone1/README.md)
+    - **Requirements:** [Milestone 1 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone1/README.md)<br>
     ![Milestone 1 GIF](Milestone1/Minesweeper-M1.gif)
 ___
 - [x] Milestone 2: Interactive Playable Version
     - **Time:** 1.12 hr. 
-    - **Requirements:** [Milestone 2 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone2/README.md)
+    - **Requirements:** [Milestone 2 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone2/README.md)<br>
     ![Milestone 2 GIF](Milestone2/Minesweeper-M2.gif)
 ___
 - [x] Milestone 3: Using Recursion
     - **Time:** 2.51 hr. 
-    - **Requirements:** [Milestone 3 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone3/README.md)
+    - **Requirements:** [Milestone 3 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone3/README.md)<br>
     ![Milestone 3 GIF](Milestone3/Minesweeper-M3.gif)
 ___
 - [x] Milestone 4: GUI Version
