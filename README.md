@@ -22,10 +22,10 @@ ___
 ___
 - [x] Milestone 4: GUI Version
     - **Time:** 3.16 hr. 
-    - **Requirements:**[Milestone 4 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone4/README.md)
+    - **Requirements:** [Milestone 4 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone4/README.md)<br>
     ![Milestone 4 GIF](Milestone4/Minesweeper-M4.gif)
 ___
-- [ ] Milestone 5: Combining GUI and Game Logic
-- [ ] Milestone 6: PlayerStats Class
-- [ ] Milestone 7: Final Project Presentation
-- [ ] Uploading a Video to Youtube Instructions
+- [x] Milestone 5: Combining GUI and Game Logic
+    - **Time:** 15.5 hr. 
+    - **Requirements:** [Milestone 5 Specifications](https://github.com/kuhlekt1v/Minesweeper/blob/main/Milestone5/README.md)<br>
+    ![Milestone 5 GIF](Milestone5/Minesweeper-M5.gif)
